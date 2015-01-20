@@ -132,7 +132,7 @@
 @end
 
 
-@interface ATSDragToReorderTableViewController : UITableViewController <UIGestureRecognizerDelegate, ATSDragToReorderTableViewControllerDraggableIndicators>  {
+@interface ATSDragToReorderTableViewController : UITableView <UIGestureRecognizerDelegate, ATSDragToReorderTableViewControllerDraggableIndicators>  {
 @protected
 	UIPanGestureRecognizer *dragGestureRecognizer;
 	UILongPressGestureRecognizer *longPressGestureRecognizer;
