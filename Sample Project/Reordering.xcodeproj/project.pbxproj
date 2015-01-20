@@ -14,7 +14,7 @@
 		49E3A63A1A6E8050009E2C7E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49E3A6391A6E8050009E2C7E /* Images.xcassets */; };
 		49E3A63D1A6E8050009E2C7E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49E3A63B1A6E8050009E2C7E /* LaunchScreen.xib */; };
 		49E3A6491A6E8051009E2C7E /* ReorderingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E3A6481A6E8051009E2C7E /* ReorderingTests.m */; };
-		49E3A6551A6E807D009E2C7E /* ATSDragToReorderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E3A6541A6E807D009E2C7E /* ATSDragToReorderTableViewController.m */; };
+		49E3A6551A6E807D009E2C7E /* ATSDragToReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E3A6541A6E807D009E2C7E /* ATSDragToReorderTableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,8 +41,8 @@
 		49E3A6421A6E8051009E2C7E /* ReorderingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReorderingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E3A6471A6E8051009E2C7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49E3A6481A6E8051009E2C7E /* ReorderingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReorderingTests.m; sourceTree = "<group>"; };
-		49E3A6531A6E807D009E2C7E /* ATSDragToReorderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ATSDragToReorderTableViewController.h; path = ../../ATSDragToReorderTableViewController.h; sourceTree = "<group>"; };
-		49E3A6541A6E807D009E2C7E /* ATSDragToReorderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATSDragToReorderTableViewController.m; path = ../../ATSDragToReorderTableViewController.m; sourceTree = "<group>"; };
+		49E3A6531A6E807D009E2C7E /* ATSDragToReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ATSDragToReorderTableView.h; path = ../../ATSDragToReorderTableView.h; sourceTree = "<group>"; };
+		49E3A6541A6E807D009E2C7E /* ATSDragToReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATSDragToReorderTableView.m; path = ../../ATSDragToReorderTableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,8 +126,8 @@
 		49E3A6521A6E806A009E2C7E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				49E3A6531A6E807D009E2C7E /* ATSDragToReorderTableViewController.h */,
-				49E3A6541A6E807D009E2C7E /* ATSDragToReorderTableViewController.m */,
+				49E3A6531A6E807D009E2C7E /* ATSDragToReorderTableView.h */,
+				49E3A6541A6E807D009E2C7E /* ATSDragToReorderTableView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -235,7 +235,7 @@
 				49E3A6351A6E8050009E2C7E /* ViewController.m in Sources */,
 				49E3A6321A6E8050009E2C7E /* AppDelegate.m in Sources */,
 				49E3A62F1A6E8050009E2C7E /* main.m in Sources */,
-				49E3A6551A6E807D009E2C7E /* ATSDragToReorderTableViewController.m in Sources */,
+				49E3A6551A6E807D009E2C7E /* ATSDragToReorderTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

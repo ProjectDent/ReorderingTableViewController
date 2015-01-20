@@ -7,12 +7,12 @@
 //
 
 #import "ViewController.h"
-#import "ATSDragToReorderTableViewController.h"
+#import "ATSDragToReorderTableView.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic, strong) ATSDragToReorderTableViewController *tableView;
+@property (nonatomic, strong) ATSDragToReorderTableView *tableView;
 
 @end
 
@@ -31,7 +31,7 @@
         [self.items addObject:[NSString stringWithFormat:@"Item #%lu", i + 1]];
     }
     
-    self.tableView = [ATSDragToReorderTableViewController new];
+    self.tableView = [ATSDragToReorderTableView new];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.frame = self.view.bounds;
@@ -74,7 +74,7 @@
 }
 
 // should be identical to cell returned in -tableView:cellForRowAtIndexPath:
-- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
+- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableView:(ATSDragToReorderTableView *)dragTableView {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
     
@@ -82,7 +82,7 @@
 }
 
 /*
-	Required for drag tableview controller
+	Required for drag tableview
  */
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     

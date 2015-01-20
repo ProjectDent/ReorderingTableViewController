@@ -1,5 +1,5 @@
 //
-//  ATSDragToReorderTableViewController.m
+//  ATSDragToReorderTableView.m
 //
 //  Created by Daniel Shusta on 11/28/10.
 //  Copyright 2010 Acacia Tree Software. All rights reserved.
@@ -37,7 +37,7 @@
 		prevents against data loss due to crashes or interruptions -- at worst,
 		the actual cell is still there, only hidden.
 
-		In addition to dragging a cell, ATSDragToReorderTableViewController will
+		In addition to dragging a cell, ATSDragToReorderTableView will
 		autoscroll when the top or bottom is approached. This is done by a
 		CADisplayLink, which fires just before rendering a frame, every 1/60th
 		of a second. The method it calls will adjust the contentOffset of
@@ -104,14 +104,14 @@
  */
 
 
-#import "ATSDragToReorderTableViewController.h"
+#import "ATSDragToReorderTableView.h"
 
 
 #define TAG_FOR_ABOVE_SHADOW_VIEW_WHEN_DRAGGING 100
 #define TAG_FOR_BELOW_SHADOW_VIEW_WHEN_DRAGGING 200
 
 
-@interface ATSDragToReorderTableViewController ()
+@interface ATSDragToReorderTableView ()
 
 typedef enum {
 	AutoscrollStatusCellInBetween,
@@ -151,7 +151,7 @@ typedef enum {
 #pragma mark -
 
 
-@implementation ATSDragToReorderTableViewController
+@implementation ATSDragToReorderTableView
 @synthesize dragDelegate, indicatorDelegate;
 @synthesize reorderingEnabled=_reorderingEnabled;
 @synthesize draggedCell, indexPathBelowDraggedCell, timerToAutoscroll;
@@ -182,11 +182,11 @@ typedef enum {
     /*
      *	If app resigns active while we're dragging, safely complete the drag.
      */
-    __weak ATSDragToReorderTableViewController *blockSelf = self;
+    __weak ATSDragToReorderTableView *blockSelf = self;
     if ( resignActiveObserver == nil )
         resignActiveObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:nil usingBlock:^(NSNotification *arg1) {
             if ( [blockSelf isDraggingCell] ) {
-                ATSDragToReorderTableViewController *strongBlockSelf = blockSelf;
+                ATSDragToReorderTableView *strongBlockSelf = blockSelf;
                 
                 CGPoint currentPoint = [strongBlockSelf->dragGestureRecognizer translationInView:blockSelf];
                 [strongBlockSelf fastCompleteGesturesWithTranslationPoint:currentPoint];
@@ -445,7 +445,7 @@ typedef enum {
 
 	[self.draggedCell setHighlighted:YES animated:NO];
 	[UIView animateWithDuration:0.23 delay:0 options:(UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut) animations:^{
-		[self.indicatorDelegate dragTableViewController:self addDraggableIndicatorsToCell:self.draggedCell forIndexPath:indexPathOfRow];
+		[self.indicatorDelegate dragTableView:self addDraggableIndicatorsToCell:self.draggedCell forIndexPath:indexPathOfRow];
 	} completion:^(BOOL finished) {
 		/*
 		 *	 We're not changing the cell after this so go ahead and rasterize.
@@ -481,8 +481,8 @@ typedef enum {
 	 */
 	self.indexPathBelowDraggedCell = indexPathOfRow;
 
-	if ([self.dragDelegate respondsToSelector:@selector(dragTableViewController:didBeginDraggingAtRow:)])
-		[self.dragDelegate dragTableViewController:self didBeginDraggingAtRow:indexPathOfRow];
+	if ([self.dragDelegate respondsToSelector:@selector(dragTableView:didBeginDraggingAtRow:)])
+		[self.dragDelegate dragTableView:self didBeginDraggingAtRow:indexPathOfRow];
 
 	UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, NSLocalizedString(@"Now dragging.", @"Voiceover annoucement"));
 }
@@ -685,8 +685,8 @@ typedef enum {
 		Get a new cell and put it on top of actual cell for that index path.
 	 */
 	UITableViewCell *cellCopy;
-	if ( [self.indicatorDelegate respondsToSelector:@selector(cellIdenticalToCellAtIndexPath:forDragTableViewController:)])
-		cellCopy = [self.indicatorDelegate cellIdenticalToCellAtIndexPath:indexPath forDragTableViewController:self];
+    if ( [self.indicatorDelegate respondsToSelector:@selector(cellIdenticalToCellAtIndexPath:forDragTableView:)])
+		cellCopy = [self.indicatorDelegate cellIdenticalToCellAtIndexPath:indexPath forDragTableView:self];
 	else
 		cellCopy = [self.dataSource tableView:self cellForRowAtIndexPath:indexPath];
 	cellCopy.frame = [self rectForRowAtIndexPath:indexPath];
@@ -865,8 +865,8 @@ typedef enum {
 	/*
 		Notify the delegate that we're about to finish
 	 */
-	if ([self.dragDelegate respondsToSelector:@selector(dragTableViewController:willEndDraggingToRow:)])
-		[self.dragDelegate dragTableViewController:self willEndDraggingToRow:self.indexPathBelowDraggedCell];
+	if ([self.dragDelegate respondsToSelector:@selector(dragTableView:willEndDraggingToRow:)])
+		[self.dragDelegate dragTableView:self willEndDraggingToRow:self.indexPathBelowDraggedCell];
 
 
 	/*
@@ -882,8 +882,8 @@ typedef enum {
 	CGRect rectForIndexPath = [self rectForRowAtIndexPath:self.indexPathBelowDraggedCell];
 
 	BOOL hideDragIndicator = YES;
-	if( [self.dragDelegate respondsToSelector:@selector(dragTableViewController:shouldHideDraggableIndicatorForDraggingToRow:)] )
-		hideDragIndicator = [self.dragDelegate dragTableViewController:self shouldHideDraggableIndicatorForDraggingToRow:blankIndexPath];
+	if( [self.dragDelegate respondsToSelector:@selector(dragTableView:shouldHideDraggableIndicatorForDraggingToRow:)] )
+		hideDragIndicator = [self.dragDelegate dragTableView:self shouldHideDraggableIndicatorForDraggingToRow:blankIndexPath];
 
 	/*
 	 Dehighlight the cell while moving it to the expected location for that indexPath's cell.
@@ -899,7 +899,7 @@ typedef enum {
 			Hides the draggable appearance.
 		 */
 		if( hideDragIndicator )
-			[self.indicatorDelegate dragTableViewController:self hideDraggableIndicatorsOfCell:oldDraggedCell];
+			[self.indicatorDelegate dragTableView:self hideDraggableIndicatorsOfCell:oldDraggedCell];
 	} completion:^(BOOL finished) {
 		/*
 		 Update tableView to show the real cell. Reload to reflect any changes caused by dragDelegate.
@@ -909,12 +909,12 @@ typedef enum {
 		/*
 		 Removes the draggable appearance so cell can be reused.
 		 */
-		[self.indicatorDelegate dragTableViewController:self removeDraggableIndicatorsFromCell:oldDraggedCell];
+		[self.indicatorDelegate dragTableView:self removeDraggableIndicatorsFromCell:oldDraggedCell];
 
 		[oldDraggedCell removeFromSuperview];
 
-		if( [self.dragDelegate respondsToSelector:@selector(dragTableViewController:didEndDraggingToRow:)] )
-			[self.dragDelegate dragTableViewController:self didEndDraggingToRow:blankIndexPath];
+		if( [self.dragDelegate respondsToSelector:@selector(dragTableView:didEndDraggingToRow:)] )
+			[self.dragDelegate dragTableView:self didEndDraggingToRow:blankIndexPath];
 
 		UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, NSLocalizedString(@"Drag completed.", @"Voiceover annoucement"));
 	}];
@@ -942,8 +942,8 @@ typedef enum {
 	/*
 		Reset tableView and delegate back to normal
 	 */
-	if ([self.dragDelegate respondsToSelector:@selector(dragTableViewController:willEndDraggingToRow:)])
-		[self.dragDelegate dragTableViewController:self willEndDraggingToRow:self.indexPathBelowDraggedCell];
+	if ([self.dragDelegate respondsToSelector:@selector(dragTableView:willEndDraggingToRow:)])
+		[self.dragDelegate dragTableView:self willEndDraggingToRow:self.indexPathBelowDraggedCell];
 
 	[self reloadRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathBelowDraggedCell] withRowAnimation:UITableViewRowAnimationNone];
 
@@ -952,7 +952,7 @@ typedef enum {
 	 */
 	self.draggedCell.layer.shouldRasterize = NO;
 
-	[self.indicatorDelegate dragTableViewController:self removeDraggableIndicatorsFromCell:self.draggedCell];
+	[self.indicatorDelegate dragTableView:self removeDraggableIndicatorsFromCell:self.draggedCell];
 
 	[self.draggedCell removeFromSuperview];
 
@@ -1440,7 +1440,7 @@ typedef enum {
 		cell -- Almost certainly will be self.draggedCell
 		indexPath -- path of cell, provided for subclasses
  */
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController addDraggableIndicatorsToCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
+- (void)dragTableView:(ATSDragToReorderTableView *)dragTableView addDraggableIndicatorsToCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 
 	 NSArray *arrayOfShadowViews = [self addShadowViewsToCell:cell];
 
@@ -1459,7 +1459,7 @@ typedef enum {
 		 
 		 If you don't want to animate, just use -removeDraggableIndicatorsFromCell: directly.
  */
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController hideDraggableIndicatorsOfCell:(UITableViewCell *)cell {
+- (void)dragTableView:(ATSDragToReorderTableView *)dragTableView hideDraggableIndicatorsOfCell:(UITableViewCell *)cell {
 	UIView *aboveShadowView = [cell viewWithTag:TAG_FOR_ABOVE_SHADOW_VIEW_WHEN_DRAGGING];
 	aboveShadowView.alpha = 0;
 	
@@ -1475,7 +1475,7 @@ typedef enum {
  
 		not meant to be animated. Use -hideDraggableIndicatorsOfCell: for that and call this in the animation's completion block.
  */
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController removeDraggableIndicatorsFromCell:(UITableViewCell *)cell {
+- (void)dragTableView:(ATSDragToReorderTableView *)dragTableView removeDraggableIndicatorsFromCell:(UITableViewCell *)cell {
 	UIView *aboveShadowView = [cell viewWithTag:TAG_FOR_ABOVE_SHADOW_VIEW_WHEN_DRAGGING];
 	[aboveShadowView removeFromSuperview];
 	
