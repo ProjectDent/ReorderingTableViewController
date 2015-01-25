@@ -1080,6 +1080,11 @@ typedef enum {
 	/*
 		If the dragged cell is covering a new row that isn't the one with the blank item, move the blank item to that new row.
 	 */
+    
+    if (rowToMoveTo.section != self.indexPathBelowDraggedCell.section) {
+        return;
+    }
+    
 	if (rowToMoveTo != nil && !(rowToMoveTo.section == self.indexPathBelowDraggedCell.section && rowToMoveTo.row == self.indexPathBelowDraggedCell.row)) {
 		/*
 			Tableview's dataSource must update before we ask the tableview to update rows.

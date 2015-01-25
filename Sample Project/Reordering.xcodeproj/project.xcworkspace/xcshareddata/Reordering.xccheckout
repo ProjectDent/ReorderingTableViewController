@@ -22,7 +22,7 @@
 		<key>5F42430963F32A0F591AFCBD5EEE93B9F12051F6</key>
 		<string>../../..</string>
 		<key>7476E02D6A8100202550F6532C352549C8D4657B</key>
-		<string>../../../../..</string>
+		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/ProjectDent/ReorderingTableViewController.git</string>
@@ -38,7 +38,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>7476E02D6A8100202550F6532C352549C8D4657B</string>
 			<key>IDESourceControlWCCName</key>
-			<string>..</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
